@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
 
-function App() {
+export default function App() {
+  const [palavra, setPalavra] = useState("");
+  const [piada, setPiada] = useState("");
+
+  const onblurCep = () => {
+    fetch(`https://api.chucknorris.io/jokes/random?category=${palavra}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setPiada(data);
+      });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="tudo">
+      <h1 className="t">Frases Chuck Norris</h1>
+      <form onSubmit={(e) => onblurCep(e.preventDefault())}>
+        <div className="label">
+          <label> Palavra: </label>
+          <input
+            type="text"
+            onChange={(e) => setPalavra(e.target.value)}
+            className="input"
+          />
+
+          <button type="submit" className="b">
+            Enviar
+          </button>
+        </div>
+
+        <div>
+          <p className="p">{piada.value}</p>
+        </div>
+      </form>
     </div>
   );
 }
-
-export default App;
